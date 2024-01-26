@@ -19,11 +19,16 @@ async function run(name) {
     (elems) => elems.map((e) => e.innerText)
   );
 
+  const second = await page.$$eval(
+    ".item-table-container .percent-chance",
+    (elems) => elems.map((e) => e.innerText)
+  );
+
   // const data = await first.$$eval(".item-title", (elemes) =>
   //   elemes.map((e) => e.innerText)
   // );
 
-  console.log(first);
+  console.log(first, second);
 
   // const data = await target.$$eval(".item-title", (elems) => elems.innerText);
 
