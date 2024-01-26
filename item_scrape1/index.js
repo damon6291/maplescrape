@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const writeXlsxFile = require("write-excel-file/node");
 const { schema } = require("./schema");
-const { listOfItems } = require("./itemList");
+const { listOfItems, outputName } = require("./itemList");
 const path = require("path");
 const fs = require("fs");
 
@@ -16,6 +16,9 @@ var objects = [];
 async function run(itemName) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
+  itemName = itemName.includes("Scroll")
+    ? (itemName = `${itemName}25`)
+    : itemName;
   await page.goto(`https://osmlib.com/?search=${itemName}`);
 
   await timeout(2000);
@@ -180,7 +183,7 @@ async function runAndPrint() {
   });
 
   const output = fs.createWriteStream(
-    path.join(OUTPUT_DIRECTORY, "stream.xlsx")
+    path.join(OUTPUT_DIRECTORY, `${outputName}.xlsx`)
   );
   stream.pipe(output);
 }
