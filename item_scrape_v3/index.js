@@ -15,7 +15,7 @@ function timeout(ms) {
 var objects = [];
 
 async function run(itemName) {
-  const browser = await puppeteer.launch({headless: "new"});
+  const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
   itemName = itemName.includes("Scroll")
     ? (itemName = `${itemName}25`)
@@ -24,7 +24,9 @@ async function run(itemName) {
 
   await timeout(2000);
 
-  const data = await page.$$eval(".ui.label", (elems) =>
+  const firstDiv = await page.$(".main-showcase-preview");
+
+  const data = await firstDiv.$$eval(".ui.label", (elems) =>
     elems.map((e) => {
       var inner = e.innerText.split("\n");
       return {
@@ -52,7 +54,7 @@ async function run(itemName) {
   //   effectArray.push(temp);
   // }
 
-  const long = await page.$$eval(".ui.label.stats.long", (elems) =>
+  const long = await firstDiv.$$eval(".ui.label.stats.long", (elems) =>
     elems.map((e) => {
       return e.innerText;
     })
@@ -180,21 +182,22 @@ async function runAndPrint() {
   for (var i in monsterList) {
     objects = [];
     var monsterName = monsterList[i];
-    var data = JSON.parse(fs.readFileSync(path.join(JSON_DIRECTORY, `${monsterName}.json`)))
+    var data = JSON.parse(
+      fs.readFileSync(path.join(JSON_DIRECTORY, `${monsterName}.json`))
+    );
 
     for (const item in data) {
       await run(data[item]);
     }
-  
+
     const stream = await writeXlsxFile(objects, {
       schema,
     });
-  
+
     const output = fs.createWriteStream(
       path.join(OUTPUT_DIRECTORY, `${monsterName}.xlsx`)
     );
     stream.pipe(output);
-
   }
 }
 

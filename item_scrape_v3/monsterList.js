@@ -1,3 +1,3 @@
-const monsterList = ["snail", "blue snail", "shroom"];
+const monsterList = ["bubbling"];
 
 exports.monsterList = monsterList;

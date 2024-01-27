@@ -91,6 +91,9 @@ async function runAndPrint() {
     fs.mkdirSync(OUTPUT_DIRECTORY);
   }
   for (var i in monsterList) {
+    excel_object = [];
+    names_object = [];
+    percentages_object = [];
     var monsterName = monsterList[i];
     console.log("Starting monster percentage", monsterName);
     await run(monsterName);
